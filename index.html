@@ -110,8 +110,9 @@
   .controls{
     position:sticky;top:0;z-index:5;
     background:var(--bg);padding:10px 0 12px;margin-bottom:4px;
-    display:flex;gap:8px;flex-wrap:wrap;align-items:center;
+    display:flex;flex-direction:column;gap:8px;
   }
+  .controls-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
   .chip{
     font-family:"Baloo Bhaijaan 2",sans-serif;font-size:14.5px;
     border:1.5px solid var(--line);background:var(--card);color:var(--ink-soft);
@@ -258,6 +259,7 @@
 
   @media (max-width:640px){
     .units{padding-inline-start:2px}
+    .spacer{display:none}
   }
   @media print{
     .controls,.ghost,footer{display:none}
@@ -286,17 +288,21 @@
   </div>
 
   <div class="controls">
-    <button class="chip" data-stage="all" aria-pressed="true">الكل</button>
-    <button class="chip" data-stage="always" aria-pressed="false">لكل الأعمار</button>
-    <button class="chip" data-stage="s1" aria-pressed="false"><bdi dir="ltr">0-3</bdi></button>
-    <button class="chip" data-stage="s2" aria-pressed="false"><bdi dir="ltr">3-6</bdi></button>
-    <button class="chip" data-stage="s3" aria-pressed="false"><bdi dir="ltr">6-9</bdi></button>
-    <button class="chip" data-stage="gifts" aria-pressed="false">الهدايا</button>
-    <span class="spacer"></span>
-    <button class="chip" id="onlyLeft" aria-pressed="false">اللي لسه</button>
-    <button class="ghost" id="printBtn">طباعة</button>
-    <button class="ghost" id="resetBtn">مسح الكل</button>
-    <button class="chip" id="loginBtn" aria-pressed="false">دخول</button>
+    <div class="controls-row">
+      <button class="chip" data-stage="all" aria-pressed="true">الكل</button>
+      <button class="chip" data-stage="always" aria-pressed="false">لكل الأعمار</button>
+      <button class="chip" data-stage="s1" aria-pressed="false"><bdi dir="ltr">0-3</bdi></button>
+      <button class="chip" data-stage="s2" aria-pressed="false"><bdi dir="ltr">3-6</bdi></button>
+      <button class="chip" data-stage="s3" aria-pressed="false"><bdi dir="ltr">6-9</bdi></button>
+      <button class="chip" data-stage="gifts" aria-pressed="false">الهدايا</button>
+    </div>
+    <div class="controls-row">
+      <button class="chip" id="onlyLeft" aria-pressed="false">اللي لسه</button>
+      <button class="ghost" id="printBtn">طباعة</button>
+      <button class="ghost" id="resetBtn">مسح الكل</button>
+      <span class="spacer"></span>
+      <button class="chip" id="loginBtn" aria-pressed="false">دخول</button>
+    </div>
   </div>
 
   <div id="list"></div>
