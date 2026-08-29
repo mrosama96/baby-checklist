@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تجهيزات بيبي زين</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style id="app-style">
+  :root{
+    --bg:#EEF5FC;
+    --card:#FFFFFF;
+    --ink:#1E3A5F;
+    --ink-soft:#7189A6;
+    --line:#DCE8F4;
+    --sky:#3F8BD8;
+    --mint:#2FB39A;
+    --sun:#F5B335;
+    --grape:#7A6FE0;
+    --warn-bg:#FFF6E5;
+    --warn-line:#F5B335;
+    --warn-ink:#8A5A00;
+    --radius:20px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0F1B2B;
+      --card:#16273D;
+      --ink:#E7EFF9;
+      --ink-soft:#8CA3C0;
+      --line:#233A55;
+      --sky:#5FA3E8;
+      --mint:#3FCBAE;
+      --sun:#F2C463;
+      --grape:#9C90F2;
+      --warn-bg:#2E2408;
+      --warn-line:#8A6A1A;
+      --warn-ink:#F2C463;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0F1B2B;
+    --card:#16273D;
+    --ink:#E7EFF9;
+    --ink-soft:#8CA3C0;
+    --line:#233A55;
+    --sky:#5FA3E8;
+    --mint:#3FCBAE;
+    --sun:#F2C463;
+    --grape:#9C90F2;
+    --warn-bg:#2E2408;
+    --warn-line:#8A6A1A;
+    --warn-ink:#F2C463;
+  }
+  *{box-sizing:border-box}
+  html{direction:rtl}
+  html,body{margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(circle at 12% 4%, color-mix(in srgb, var(--sky) 12%, var(--bg)) 0 22%, transparent 22.5%),
+      radial-gradient(circle at 92% 12%, color-mix(in srgb, var(--mint) 12%, var(--bg)) 0 16%, transparent 16.5%),
+      var(--bg);
+    background-attachment:fixed;
+    color:var(--ink);
+    font-family:"IBM Plex Sans Arabic",system-ui,"Segoe UI",sans-serif;
+    font-size:16px;line-height:1.65;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:26px 16px 80px}
+
+  /* ---------- Header ---------- */
+  header{text-align:center;margin-bottom:8px}
+  .eyebrow{
+    font-family:"Baloo Bhaijaan 2",sans-serif;font-size:14px;
+    color:var(--sky);margin:0 0 2px;letter-spacing:.04em;
+  }
+  h1{
+    font-family:"Baloo Bhaijaan 2",sans-serif;font-weight:800;
+    font-size:clamp(32px,8vw,50px);margin:0;line-height:1.3;
+    color:var(--ink);text-wrap:balance;
+  }
+  h1 .zain{
+    background:linear-gradient(180deg,transparent 62%, color-mix(in srgb, var(--sun) 55%, transparent) 62%);
+    padding:0 6px;border-radius:4px;
+  }
+  .sub{margin:6px auto 0;color:var(--ink-soft);font-size:15px;max-width:520px}
+
+  /* ---------- Gauge ---------- */
+  .gauge{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:20px;margin:22px 0 20px;box-shadow:0 6px 20px rgba(63,139,216,.08);
+  }
+  .gauge-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .gauge-num{font-family:"Baloo Bhaijaan 2",sans-serif;font-size:32px;font-weight:800;line-height:1.2;font-variant-numeric:tabular-nums}
+  .gauge-num small{font-size:15px;font-weight:500;color:var(--ink-soft)}
+  .gauge-pct{font-family:"Baloo Bhaijaan 2",sans-serif;font-size:15px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+  .bar{display:flex;gap:5px;margin-top:14px;height:18px}
+  .seg{position:relative;background:color-mix(in srgb, var(--sky) 10%, var(--card));border-radius:9px;overflow:hidden;flex-grow:1}
+  .seg i{position:absolute;inset-block:0;inset-inline-start:0;width:0;display:block;
+    border-radius:9px;transition:width .4s cubic-bezier(.34,1.4,.64,1)}
+  .legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:13px;font-size:13.5px;color:var(--ink-soft)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+
+  /* ---------- Controls ---------- */
+  .controls{
+    position:sticky;top:0;z-index:5;
+    background:var(--bg);padding:10px 0 12px;margin-bottom:4px;
+    display:flex;gap:8px;flex-wrap:wrap;align-items:center;
+  }
+  .chip{
+    font-family:"Baloo Bhaijaan 2",sans-serif;font-size:14.5px;
+    border:1.5px solid var(--line);background:var(--card);color:var(--ink-soft);
+    padding:6px 16px;border-radius:999px;cursor:pointer;transition:.18s;
+  }
+  .chip:hover{border-color:var(--sky);color:var(--sky)}
+  .chip:focus-visible{outline:2.5px solid var(--sky);outline-offset:2px}
+  .chip[aria-pressed="true"]{background:var(--sky);color:#fff;border-color:var(--sky)}
+  #onlyLeft[aria-pressed="true"]{background:var(--sun);border-color:var(--sun);color:#5A3D00}
+  .spacer{flex:1}
+  .ghost{
+    font-family:inherit;font-size:13px;background:none;border:none;
+    color:var(--ink-soft);cursor:pointer;text-decoration:underline;padding:6px;
+  }
+  .ghost:hover{color:var(--sky)}
+  .ghost:disabled{opacity:.5;cursor:not-allowed;text-decoration:none}
+
+  /* ---------- Sections ---------- */
+  section{margin-top:30px}
+  .sec-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:2px}
+  .tag{
+    font-family:"Baloo Bhaijaan 2",sans-serif;font-size:14px;color:#fff;
+    padding:2px 14px;border-radius:999px;
+  }
+  h2{font-family:"Baloo Bhaijaan 2",sans-serif;font-size:23px;margin:0;font-weight:700}
+  .sec-note{color:var(--ink-soft);font-size:14px;margin:0 0 12px}
+  .cat{
+    font-family:"Baloo Bhaijaan 2",sans-serif;
+    font-size:14px;color:var(--ink-soft);margin:18px 0 8px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .cat::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  /* ---------- Rows ---------- */
+  .row{
+    background:var(--card);border:1.5px solid var(--line);border-radius:16px;
+    padding:12px 14px;margin-bottom:9px;transition:border-color .2s,background .2s;
+  }
+  .row:hover{border-color:color-mix(in srgb, var(--sky) 35%, var(--line))}
+  .row.done{background:color-mix(in srgb, var(--mint) 8%, var(--card));border-color:color-mix(in srgb, var(--mint) 40%, var(--line))}
+  .row.done .name{color:var(--ink-soft);text-decoration:line-through;text-decoration-thickness:1.5px}
+
+  .row-top{display:flex;align-items:center;gap:12px}
+  .name{font-size:15.5px;font-weight:500;flex:1}
+  .name em{font-style:normal;color:var(--ink-soft);font-size:13.5px;font-weight:400}
+
+  .qty{
+    font-family:"Baloo Bhaijaan 2",sans-serif;font-size:17px;font-weight:700;font-variant-numeric:tabular-nums;
+    min-width:38px;text-align:center;background:color-mix(in srgb, var(--sky) 10%, var(--card));color:var(--sky);
+    border-radius:11px;padding:5px 8px;flex:0 0 auto;line-height:1;
+  }
+  .row.done .qty{background:color-mix(in srgb, var(--mint) 15%, var(--card));color:var(--mint)}
+  button.qty{border:1.5px solid transparent;cursor:pointer;font-family:inherit;transition:.18s;-webkit-appearance:none;appearance:none}
+  button.qty:hover{border-color:var(--sky)}
+  button.qty:focus-visible{outline:2.5px solid var(--sky);outline-offset:2px}
+  button.qty.all{background:color-mix(in srgb, var(--mint) 15%, var(--card));color:var(--mint)}
+  button.qty.partial{background:color-mix(in srgb, var(--sun) 18%, var(--card));color:var(--warn-ink);border-color:var(--sun)}
+  button.qty:disabled{cursor:not-allowed;opacity:.7}
+
+  .units-details{margin-top:11px}
+  .units-details > summary{
+    list-style:none;cursor:pointer;user-select:none;
+    display:flex;align-items:center;gap:7px;
+    font-size:13.5px;color:var(--sky);font-weight:500;
+    padding:4px 2px;border-radius:8px;width:fit-content;
+  }
+  .units-details > summary::-webkit-details-marker{display:none}
+  .units-details > summary::before{
+    content:"";width:7px;height:7px;border-inline-end:2px solid currentColor;border-block-end:2px solid currentColor;
+    transform:rotate(45deg);transition:transform .18s;margin-inline-end:2px;
+  }
+  .units-details[open] > summary::before{transform:rotate(-135deg)}
+  .units-details > summary:hover{color:var(--ink)}
+  .units-details > summary:focus-visible{outline:2.5px solid var(--sky);outline-offset:2px}
+
+  .units{display:flex;flex-direction:column;gap:2px;margin:6px 0 2px;padding-inline-start:6px;border-inline-start:2px solid var(--line)}
+  .unit-row{
+    display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:8px;
+  }
+  .unit-row:hover{background:color-mix(in srgb, var(--sky) 6%, transparent)}
+  .unit-row span.unit-label{font-size:13.5px;color:var(--ink-soft)}
+  .unit-row.checked span.unit-label{color:var(--mint);text-decoration:line-through}
+  .unit{position:relative;width:21px;height:21px;flex:0 0 auto}
+  .unit input{position:absolute;inset:0;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+  .unit input:disabled{cursor:not-allowed}
+  .unit span.mark{
+    position:absolute;inset:0;border:2px solid color-mix(in srgb, var(--sky) 30%, var(--line));border-radius:50%;background:var(--card);
+    display:grid;place-items:center;transition:.18s;pointer-events:none;
+  }
+  .unit span.mark::after{
+    content:"";width:8px;height:5px;border:2px solid #fff;border-top:0;border-inline-end:0;
+    transform:rotate(-45deg) scale(.3);opacity:0;transition:.18s cubic-bezier(.34,1.5,.64,1);
+  }
+  .unit input:checked + span.mark{background:var(--mint);border-color:var(--mint)}
+  .unit input:checked + span.mark::after{opacity:1;transform:rotate(-45deg) scale(1)}
+  .unit input:focus-visible + span.mark{outline:2px solid var(--sky);outline-offset:2px}
+
+  .note-wrap{margin-top:11px}
+  .note-label{
+    display:block;font-size:12px;color:var(--ink-soft);margin-bottom:4px;
+    font-family:"Baloo Bhaijaan 2",sans-serif;
+  }
+  .note{
+    font-family:"IBM Plex Sans Arabic",inherit;font-size:14px;color:var(--ink);
+    background:color-mix(in srgb, var(--sky) 4%, var(--card));
+    border:1.5px solid var(--line);
+    padding:9px 11px;width:100%;border-radius:10px;
+    resize:none;min-height:40px;line-height:1.5;
+    display:block;box-shadow:none;
+  }
+  .note::placeholder{color:var(--ink-soft);opacity:.65}
+  .note:focus{outline:none;border-color:var(--sky);background:color-mix(in srgb, var(--sky) 8%, var(--card))}
+  .note:disabled{opacity:.65}
+
+  /* single-piece checkbox */
+  .cb{position:relative;width:27px;height:27px;flex:0 0 auto}
+  .cb input{position:absolute;inset:0;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+  .cb input:disabled{cursor:not-allowed}
+  .cb span{
+    position:absolute;inset:0;border:2px solid color-mix(in srgb, var(--sky) 30%, var(--line));border-radius:50%;background:var(--card);
+    display:grid;place-items:center;transition:.18s;pointer-events:none;
+  }
+  .cb span::after{
+    content:"";width:11px;height:6px;border:2.4px solid #fff;border-top:0;border-inline-end:0;
+    transform:rotate(-45deg) scale(.3);opacity:0;transition:.18s cubic-bezier(.34,1.5,.64,1);
+  }
+  .cb input:checked + span{background:var(--mint);border-color:var(--mint)}
+  .cb input:checked + span::after{opacity:1;transform:rotate(-45deg) scale(1)}
+  .cb input:focus-visible + span{outline:2.5px solid var(--sky);outline-offset:2px}
+
+  .empty{
+    color:var(--ink-soft);font-size:16px;padding:34px 8px;text-align:center;
+    font-family:"Baloo Bhaijaan 2",sans-serif;
+  }
+  footer{margin-top:40px;color:var(--ink-soft);font-size:13px;text-align:center}
+  .sync-banner{
+    background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn-ink);
+    border-radius:12px;padding:10px 14px;margin-bottom:14px;font-size:13.5px;display:none;
+  }
+  .sync-banner.show{display:block}
+  .saved{opacity:0;transition:opacity .3s;font-size:13px;color:var(--mint);font-weight:600;display:block}
+  .saved.on{opacity:1}
+  .saved.err{color:#D9534F}
+
+  @media (max-width:640px){
+    .units{padding-inline-start:2px}
+  }
+  @media print{
+    .controls,.ghost,footer{display:none}
+    body{background:#fff}
+    .row{break-inside:avoid}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">أهلاً يا حبيبنا · نوفمبر 2026</p>
+    <h1>تجهيزات بيبي <span class="zain">زين</span></h1>
+    <p class="sub">مرتّبة حسب مرحلة العمر والموسم اللي زين هيعيشه فيها، وجوّه كل مرحلة حسب الصنف.</p>
+  </header>
+
+  <div class="gauge">
+    <div class="gauge-top">
+      <div class="gauge-num"><span id="gDone">0</span> <small>من <span id="gTotalPieces">0</span> قطعة</small></div>
+      <div class="gauge-pct"><span id="gLines">0</span> صنف من <span id="gTotalLines">0</span> خلص</div>
+    </div>
+    <div class="bar" id="bar"></div>
+    <div class="legend" id="legend"></div>
+  </div>
+
+  <div class="controls">
+    <button class="chip" data-stage="all" aria-pressed="true">الكل</button>
+    <button class="chip" data-stage="always" aria-pressed="false">لكل الأعمار</button>
+    <button class="chip" data-stage="s1" aria-pressed="false"><bdi dir="ltr">0-3</bdi></button>
+    <button class="chip" data-stage="s2" aria-pressed="false"><bdi dir="ltr">3-6</bdi></button>
+    <button class="chip" data-stage="s3" aria-pressed="false"><bdi dir="ltr">6-9</bdi></button>
+    <span class="spacer"></span>
+    <button class="chip" id="onlyLeft" aria-pressed="false">اللي لسه</button>
+    <button class="ghost" id="printBtn">طباعة</button>
+    <button class="ghost" id="resetBtn">مسح الكل</button>
+  </div>
+
+  <div id="list"></div>
+
+  <footer>
+    <div class="sync-banner" id="syncBanner"></div>
+    <span id="savedMsg" class="saved"></span>
+    <div>القائمة بتتزامن لوحدها على الرابط ده — افتحيها من أي جهاز وهتلاقيها محدّثة.</div>
+  </footer>
+</div>
+
+<script>
+const DB_URL = 'https://baby-checklist-dfbe1-default-rtdb.firebaseio.com';
+const LOCAL_KEY = 'baby-checklist:v1';
+
+const STAGES = [
+  {id:'always', label:'لكل الأعمار', title:'لكل الأعمار', note:'حاجات مالهاش مقاس، أو بتستخدم من أول يوم لحد ما تخلص.', color:'var(--grape)'},
+  {id:'s1', label:'<bdi dir="ltr">0-3</bdi> شهور', title:'<bdi dir="ltr">0-3</bdi> شهور', note:'ديسمبر 2026 – فبراير 2027 · عزّ الشتا، فالتقيل والقطيفة هنا.', color:'var(--sky)'},
+  {id:'s2', label:'<bdi dir="ltr">3-6</bdi> شهور', title:'<bdi dir="ltr">3-6</bdi> شهور', note:'مارس – مايو 2027 · ربيع ومناخ متقلب، طبقات خفيفة.', color:'var(--mint)'},
+  {id:'s3', label:'<bdi dir="ltr">6-9</bdi> شهور', title:'<bdi dir="ltr">6-9</bdi> شهور', note:'يونيو – أغسطس 2027 · صيف، كله نص كم وقطن خفيف.', color:'var(--sun)'}
+];
+
+const ITEMS = [
+  {id:'a1', s:'always', c:'مفروشات ومناشف', q:3, n:'بطانيات شتوي'},
+  {id:'a2', s:'always', c:'مفروشات ومناشف', q:5, n:'كفولات'},
+  {id:'a3', s:'always', c:'مفروشات ومناشف', q:1, n:'طقم بشكير الحمام'},
+  {id:'a4', s:'always', c:'المستشفى والخروج', q:1, n:'طقم المستشفى', d:'خريفي شتوي'},
+  {id:'a5', s:'always', c:'المستشفى والخروج', q:1, n:'شنطة بيبي'},
+  {id:'a6', s:'always', c:'الرضاعة', q:1, n:'ببرونة'},
+  {id:'a7', s:'always', c:'الرضاعة', q:2, n:'لهاية'},
+  {id:'a8', s:'always', c:'الرضاعة', q:1, n:'مخدة رضاعة'},
+  {id:'a9', s:'always', c:'الرضاعة', q:1, n:'ساتر رضاعة'},
+  {id:'a10',s:'always', c:'الرضاعة', q:3, n:'مريلة'},
+  {id:'a11',s:'always', c:'قطع تحتية', q:8, n:'بانتي', d:'من غير مقاس محدد'},
+  {id:'a12',s:'always', c:'قطع تحتية', q:3, n:'طواقي'},
+
+  {id:'b1', s:'s1', c:'نوم وبيت', q:6, n:'بجامات قطعتين', d:'قطيفة شتوي'},
+  {id:'b2', s:'s1', c:'نوم وبيت', q:6, n:'طقم دفاية'},
+  {id:'b3', s:'s1', c:'نوم وبيت', q:6, n:'شباحات مش تبان'},
+  {id:'b4', s:'s1', c:'خروج', q:2, n:'سالوبيت شتوي'},
+
+  {id:'c1', s:'s2', c:'أساسي يومي', q:6, n:'شباحات مش تبان'},
+  {id:'c2', s:'s2', c:'أساسي يومي', q:4, n:'بنطلونات قطن'},
+  {id:'c3', s:'s2', c:'خروج', q:6, n:'سالوبيت ربيعي'},
+  {id:'c4', s:'s2', c:'رجلين', q:6, n:'جرابين'},
+  {id:'c5', s:'s2', c:'رجلين', q:2, n:'جزمة'},
+
+  {id:'d1', s:'s3', c:'أساسي يومي', q:8, n:'تبان نص كم'},
+  {id:'d2', s:'s3', c:'نوم وبيت', q:8, n:'بجامات قطعتين', d:'صيفي نص كم'},
+  {id:'d3', s:'s3', c:'خروج', q:4, n:'سالوبيت ربيعي'}
+];
+
+let state = {};
+try{
+  const raw = localStorage.getItem(LOCAL_KEY);
+  if(raw) state = JSON.parse(raw);
+}catch(e){}
+
+let filterStage = 'all';
+let onlyLeft = false;
+let saveTimer = null;
+let pendingRemoteState = null;
+
+const $ = s => document.querySelector(s);
+const listEl = $('#list');
+
+function rec(it){
+  const r = state[it.id] = state[it.id] || {units:[], note:''};
+  if(!Array.isArray(r.units) || r.units.length !== it.q){
+    const u = new Array(it.q).fill(false);
+    if(Array.isArray(r.units)){
+      for(let i=0;i<Math.min(u.length, r.units.length);i++) u[i] = !!r.units[i];
+    }
+    r.units = u;
+  }
+  return r;
+}
+const isAllDone = r => r.units.every(Boolean);
+const isSomeDone = r => r.units.some(Boolean);
+
+function flashSaved(text, sticky, isErr){
+  const m = $('#savedMsg');
+  m.textContent = text;
+  m.classList.toggle('err', !!isErr);
+  m.classList.add('on');
+  if(!sticky) setTimeout(()=>m.classList.remove('on'), 1400);
+}
+
+function autosize(el){
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+}
+
+function render(){
+  listEl.innerHTML = '';
+  const stages = STAGES.filter(st => filterStage === 'all' || filterStage === st.id);
+  let shown = 0;
+
+  stages.forEach(st => {
+    let items = ITEMS.filter(i => i.s === st.id);
+    if(onlyLeft) items = items.filter(i => !isAllDone(rec(i)));
+    if(!items.length) return;
+    shown += items.length;
+
+    const sec = document.createElement('section');
+    sec.innerHTML = `<div class="sec-head">
+        <span class="tag" style="background:${st.color}">${st.label}</span>
+        <h2>${st.title}</h2>
+      </div>
+      <p class="sec-note">${st.note}</p>`;
+
+    const cats = [...new Set(items.map(i => i.c))];
+    cats.forEach(cat => {
+      const h = document.createElement('div');
+      h.className = 'cat';
+      h.innerHTML = `<span>${cat}</span>`;
+      sec.appendChild(h);
+
+      items.filter(i => i.c === cat).forEach(it => {
+        const r = rec(it);
+        const allDone = isAllDone(r);
+        const someDone = isSomeDone(r);
+        const row = document.createElement('div');
+        row.className = 'row' + (allDone ? ' done' : '');
+
+        const nameHTML = `<div class="name">${it.n}${it.d ? ` <em>· ${it.d}</em>` : ''}</div>`;
+        const noteVal = (r.note || '').replace(/</g,'&lt;');
+        const doneCount = r.units.filter(Boolean).length;
+
+        let topHTML, unitsHTML = '';
+        if(it.q === 1){
+          topHTML = `
+            <label class="cb">
+              <input type="checkbox" ${r.units[0] ? 'checked' : ''} aria-label="تم شراء ${it.n}">
+              <span></span>
+            </label>
+            ${nameHTML}`;
+        } else {
+          topHTML = `
+            <button type="button" class="qty${allDone ? ' all' : ''}${someDone && !allDone ? ' partial' : ''}"
+              aria-pressed="${allDone}" title="علّمي أو امسحي كل الـ${it.q} مرة واحدة">${it.q}</button>
+            ${nameHTML}`;
+          unitsHTML = `
+            <details class="units-details" ${someDone ? 'open' : ''}>
+              <summary>القطع (<bdi dir="ltr">${doneCount}/${it.q}</bdi>)</summary>
+              <div class="units" role="group" aria-label="قطع ${it.n}">${
+                r.units.map((v,i) => `
+                  <label class="unit-row${v ? ' checked' : ''}">
+                    <span class="unit"><input type="checkbox" ${v ? 'checked' : ''} aria-label="قطعة ${i+1} من ${it.q} — ${it.n}"><span class="mark"></span></span>
+                    <span class="unit-label">قطعة ${i+1}</span>
+                  </label>`).join('')
+              }</div>
+            </details>`;
+        }
+
+        row.innerHTML = `
+          <div class="row-top">${topHTML}</div>
+          ${unitsHTML}
+          <div class="note-wrap">
+            <span class="note-label">ملاحظات</span>
+            <textarea class="note" rows="1" placeholder="مقاس، لون، من فين هنجيبها…">${noteVal}</textarea>
+          </div>`;
+
+        function afterToggle(){
+          if(onlyLeft){ render(); } else { render_row_state(); }
+          queueSave();
+        }
+        function render_row_state(){
+          const nowAll = isAllDone(r);
+          row.classList.toggle('done', nowAll);
+          const qtyBtn = row.querySelector('button.qty');
+          if(qtyBtn){
+            qtyBtn.classList.toggle('all', nowAll);
+            qtyBtn.classList.toggle('partial', isSomeDone(r) && !nowAll);
+            qtyBtn.setAttribute('aria-pressed', String(nowAll));
+          }
+          const summary = row.querySelector('.units-details > summary');
+          if(summary){
+            summary.innerHTML = `القطع (<bdi dir="ltr">${r.units.filter(Boolean).length}/${it.q}</bdi>)`;
+          }
+          row.querySelectorAll('.unit-row').forEach((lbl, i) => {
+            lbl.classList.toggle('checked', !!r.units[i]);
+          });
+          updateGauge();
+        }
+
+        if(it.q === 1){
+          row.querySelector('.cb input').addEventListener('change', e => {
+            r.units[0] = e.target.checked;
+            afterToggle();
+          });
+        } else {
+          row.querySelector('button.qty').addEventListener('click', () => {
+            const makeAll = !isAllDone(r);
+            r.units = r.units.map(() => makeAll);
+            row.querySelectorAll('.unit input').forEach(inp => inp.checked = makeAll);
+            afterToggle();
+          });
+          row.querySelectorAll('.unit input').forEach((inp, i) => {
+            inp.addEventListener('change', e => {
+              r.units[i] = e.target.checked;
+              afterToggle();
+            });
+          });
+        }
+
+        const noteEl = row.querySelector('.note');
+        requestAnimationFrame(() => autosize(noteEl));
+        noteEl.addEventListener('input', e => {
+          r.note = e.target.value;
+          autosize(noteEl);
+          queueSave();
+        });
+
+        sec.appendChild(row);
+      });
+    });
+    listEl.appendChild(sec);
+  });
+
+  if(!shown){
+    listEl.innerHTML = '<p class="empty">مفيش حاجة هنا — كل اللي في الفلتر ده خلص 🎉</p>';
+  }
+  updateGauge();
+}
+
+function updateGauge(){
+  const bar = $('#bar'), legend = $('#legend');
+  bar.innerHTML = ''; legend.innerHTML = '';
+  let donePieces = 0, doneLines = 0, totalPieces = 0, totalLines = ITEMS.length;
+
+  STAGES.forEach(st => {
+    const items = ITEMS.filter(i => i.s === st.id);
+    const total = items.reduce((a,i) => a + i.q, 0);
+    const got = items.reduce((a,i) => a + rec(i).units.filter(Boolean).length, 0);
+    donePieces += got;
+    totalPieces += total;
+    doneLines += items.filter(i => isAllDone(rec(i))).length;
+
+    const seg = document.createElement('div');
+    seg.className = 'seg';
+    seg.style.flexGrow = total;
+    seg.title = `${st.title.replace(/<[^>]+>/g,'')}: ${got} من ${total}`;
+    seg.innerHTML = `<i style="background:${st.color};width:${total ? (got/total*100) : 0}%"></i>`;
+    bar.appendChild(seg);
+
+    const l = document.createElement('span');
+    l.innerHTML = `<i class="dot" style="background:${st.color}"></i> ${st.label} — <bdi dir="ltr">${got}/${total}</bdi>`;
+    legend.appendChild(l);
+  });
+
+  $('#gDone').textContent = donePieces;
+  $('#gTotalPieces').textContent = totalPieces;
+  $('#gLines').textContent = doneLines;
+  $('#gTotalLines').textContent = totalLines;
+}
+
+document.querySelectorAll('.chip[data-stage]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterStage = btn.dataset.stage;
+    document.querySelectorAll('.chip[data-stage]').forEach(b =>
+      b.setAttribute('aria-pressed', String(b === btn)));
+    render();
+  });
+});
+$('#onlyLeft').addEventListener('click', e => {
+  onlyLeft = !onlyLeft;
+  e.target.setAttribute('aria-pressed', String(onlyLeft));
+  render();
+});
+$('#printBtn').addEventListener('click', () => window.print());
+$('#resetBtn').addEventListener('click', () => {
+  if(confirm('هيتمسح كل علامات "تم" والملاحظات. تمام؟')){
+    state = {};
+    render();
+    queueSave();
+  }
+});
+
+/* ---------- sync with Firebase Realtime Database (no login) ---------- */
+
+function isTypingNote(){
+  const a = document.activeElement;
+  return a && a.classList && a.classList.contains('note');
+}
+
+function applyRemoteState(newState){
+  if(isTypingNote()){
+    pendingRemoteState = newState;
+    return;
+  }
+  state = newState || {};
+  try{ localStorage.setItem(LOCAL_KEY, JSON.stringify(state)); }catch(e){}
+  render();
+}
+
+document.addEventListener('focusout', e => {
+  if(pendingRemoteState !== null && e.target.classList && e.target.classList.contains('note')){
+    const ps = pendingRemoteState;
+    pendingRemoteState = null;
+    setTimeout(() => applyRemoteState(ps), 60);
+  }
+});
+
+let lastSentJSON = null;
+
+function queueSave(){
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveState, 700);
+}
+
+async function saveState(){
+  try{ localStorage.setItem(LOCAL_KEY, JSON.stringify(state)); }catch(e){}
+  const json = JSON.stringify(state);
+  lastSentJSON = json;
+  try{
+    flashSaved('بيتزامن…', true);
+    const res = await fetch(DB_URL + '/state.json', {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: json
+    });
+    if(!res.ok) throw new Error('bad status');
+    flashSaved('اتزامن ✓');
+  }catch(err){
+    flashSaved('اتحفظ على الجهاز ده بس — هيتزامن لما النت يرجع', false, true);
+  }
+}
+
+async function initialLoad(){
+  try{
+    const res = await fetch(DB_URL + '/state.json');
+    if(res.ok){
+      const data = await res.json();
+      if(data) state = data;
+    }
+  }catch(e){}
+  render();
+  connectStream();
+}
+
+function connectStream(){
+  try{
+    const es = new EventSource(DB_URL + '/state.json');
+    es.addEventListener('put', e => {
+      try{
+        const msg = JSON.parse(e.data);
+        const json = JSON.stringify(msg.data || {});
+        if(msg.path === '/' && json !== lastSentJSON){
+          applyRemoteState(msg.data || {});
+        }
+      }catch(err){}
+    });
+    es.onerror = () => {
+      es.close();
+      setTimeout(connectStream, 4000);
+    };
+  }catch(e){}
+}
+
+initialLoad();
+</script>
+</body>
+</html>
