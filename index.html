@@ -292,6 +292,7 @@
     <button class="chip" id="onlyLeft" aria-pressed="false">اللي لسه</button>
     <button class="ghost" id="printBtn">طباعة</button>
     <button class="ghost" id="resetBtn">مسح الكل</button>
+    <button class="chip" id="loginBtn" aria-pressed="false">دخول</button>
   </div>
 
   <div id="list"></div>
@@ -344,11 +345,17 @@ const ITEMS = [
   {id:'d3', s:'s3', c:'خروج', q:4, n:'سالوبيت ربيعي'}
 ];
 
+const EDIT_PASSWORD = 'zain&nai';
+const EDIT_KEY = 'baby-checklist:edit';
+
 let state = {};
 try{
   const raw = localStorage.getItem(LOCAL_KEY);
   if(raw) state = JSON.parse(raw);
 }catch(e){}
+
+let editMode = false;
+try{ editMode = localStorage.getItem(EDIT_KEY) === '1'; }catch(e){}
 
 let filterStage = 'all';
 let onlyLeft = false;
@@ -425,14 +432,14 @@ function render(){
         if(it.q === 1){
           topHTML = `
             <label class="cb">
-              <input type="checkbox" ${r.units[0] ? 'checked' : ''} aria-label="تم شراء ${it.n}">
+              <input type="checkbox" ${r.units[0] ? 'checked' : ''} ${editMode ? '' : 'disabled'} aria-label="تم شراء ${it.n}">
               <span></span>
             </label>
             ${nameHTML}`;
         } else {
           topHTML = `
             <button type="button" class="qty${allDone ? ' all' : ''}${someDone && !allDone ? ' partial' : ''}"
-              aria-pressed="${allDone}" title="علّمي أو امسحي كل الـ${it.q} مرة واحدة">${it.q}</button>
+              ${editMode ? '' : 'disabled'} aria-pressed="${allDone}" title="علّمي أو امسحي كل الـ${it.q} مرة واحدة">${it.q}</button>
             ${nameHTML}`;
           unitsHTML = `
             <details class="units-details" ${someDone ? 'open' : ''}>
@@ -440,7 +447,7 @@ function render(){
               <div class="units" role="group" aria-label="قطع ${it.n}">${
                 r.units.map((v,i) => `
                   <label class="unit-row${v ? ' checked' : ''}">
-                    <span class="unit"><input type="checkbox" ${v ? 'checked' : ''} aria-label="قطعة ${i+1} من ${it.q} — ${it.n}"><span class="mark"></span></span>
+                    <span class="unit"><input type="checkbox" ${v ? 'checked' : ''} ${editMode ? '' : 'disabled'} aria-label="قطعة ${i+1} من ${it.q} — ${it.n}"><span class="mark"></span></span>
                     <span class="unit-label">قطعة ${i+1}</span>
                   </label>`).join('')
               }</div>
@@ -452,10 +459,11 @@ function render(){
           ${unitsHTML}
           <div class="note-wrap">
             <span class="note-label">ملاحظات</span>
-            <textarea class="note" rows="1" placeholder="مقاس، لون، من فين هنجيبها…">${noteVal}</textarea>
+            <textarea class="note" rows="1" ${editMode ? '' : 'disabled'} placeholder="مقاس، لون، من فين هنجيبها…">${noteVal}</textarea>
           </div>`;
 
         function afterToggle(){
+          if(!editMode) return;
           if(onlyLeft){ render(); } else { render_row_state(); }
           queueSave();
         }
@@ -564,12 +572,40 @@ $('#onlyLeft').addEventListener('click', e => {
 });
 $('#printBtn').addEventListener('click', () => window.print());
 $('#resetBtn').addEventListener('click', () => {
+  if(!editMode) return;
   if(confirm('هيتمسح كل علامات "تم" والملاحظات. تمام؟')){
     state = {};
     render();
     queueSave();
   }
 });
+
+function updateLoginBtn(){
+  const btn = $('#loginBtn');
+  btn.textContent = editMode ? 'تسجيل خروج' : 'دخول';
+  btn.setAttribute('aria-pressed', String(editMode));
+  $('#resetBtn').disabled = !editMode;
+}
+$('#loginBtn').addEventListener('click', () => {
+  if(editMode){
+    editMode = false;
+    try{ localStorage.removeItem(EDIT_KEY); }catch(e){}
+    updateLoginBtn();
+    render();
+    return;
+  }
+  const entered = prompt('اكتبي كلمة السر:');
+  if(entered === null) return;
+  if(entered === EDIT_PASSWORD){
+    editMode = true;
+    try{ localStorage.setItem(EDIT_KEY, '1'); }catch(e){}
+    updateLoginBtn();
+    render();
+  } else {
+    alert('كلمة السر غلط');
+  }
+});
+updateLoginBtn();
 
 /* ---------- sync with Firebase Realtime Database (no login) ---------- */
 
