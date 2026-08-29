@@ -345,8 +345,7 @@ const ITEMS = [
   {id:'d3', s:'s3', c:'خروج', q:4, n:'سالوبيت ربيعي'}
 ];
 
-const EDIT_PASSWORD = 'zain&nai';
-const EDIT_KEY = 'baby-checklist:edit';
+const EDIT_KEY = 'baby-checklist:pw';
 
 let state = {};
 try{
@@ -354,8 +353,9 @@ try{
   if(raw) state = JSON.parse(raw);
 }catch(e){}
 
-let editMode = false;
-try{ editMode = localStorage.getItem(EDIT_KEY) === '1'; }catch(e){}
+let myPassword = null;
+try{ myPassword = localStorage.getItem(EDIT_KEY); }catch(e){}
+let editMode = !!myPassword;
 
 let filterStage = 'all';
 let onlyLeft = false;
@@ -586,19 +586,25 @@ function updateLoginBtn(){
   btn.setAttribute('aria-pressed', String(editMode));
   $('#resetBtn').disabled = !editMode;
 }
-$('#loginBtn').addEventListener('click', () => {
+$('#loginBtn').addEventListener('click', async () => {
   if(editMode){
     editMode = false;
+    myPassword = null;
     try{ localStorage.removeItem(EDIT_KEY); }catch(e){}
     updateLoginBtn();
     render();
     return;
   }
   const entered = prompt('اكتبي كلمة السر:');
-  if(entered === null) return;
-  if(entered === EDIT_PASSWORD){
+  if(entered === null || entered === '') return;
+  const btn = $('#loginBtn');
+  btn.disabled = true;
+  const ok = await tryPassword(entered);
+  btn.disabled = false;
+  if(ok){
+    myPassword = entered;
+    try{ localStorage.setItem(EDIT_KEY, entered); }catch(e){}
     editMode = true;
-    try{ localStorage.setItem(EDIT_KEY, '1'); }catch(e){}
     updateLoginBtn();
     render();
   } else {
@@ -607,19 +613,19 @@ $('#loginBtn').addEventListener('click', () => {
 });
 updateLoginBtn();
 
-/* ---------- sync with Firebase Realtime Database (no login) ---------- */
+/* ---------- sync with Firebase Realtime Database (password checked server-side, never stored in the page) ---------- */
 
 function isTypingNote(){
   const a = document.activeElement;
   return a && a.classList && a.classList.contains('note');
 }
 
-function applyRemoteState(newState){
+function applyRemoteState(newData){
   if(isTypingNote()){
-    pendingRemoteState = newState;
+    pendingRemoteState = newData;
     return;
   }
-  state = newState || {};
+  state = newData || {};
   try{ localStorage.setItem(LOCAL_KEY, JSON.stringify(state)); }catch(e){}
   render();
 }
@@ -634,23 +640,52 @@ document.addEventListener('focusout', e => {
 
 let lastSentJSON = null;
 
+// Attempts a write with the given password; the Firebase security rules (not this
+// page) are the source of truth for whether it's correct — a rejected write means
+// a wrong password, never something checked in this client-side code.
+async function tryPassword(pw){
+  try{
+    const res = await fetch(DB_URL + '/state.json', {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({_pw: pw, data: state})
+    });
+    if(res.ok) lastSentJSON = JSON.stringify(state);
+    return res.ok;
+  }catch(e){
+    return false;
+  }
+}
+
 function queueSave(){
+  if(!editMode || !myPassword) return;
   clearTimeout(saveTimer);
   saveTimer = setTimeout(saveState, 700);
 }
 
 async function saveState(){
   try{ localStorage.setItem(LOCAL_KEY, JSON.stringify(state)); }catch(e){}
+  if(!myPassword) return;
   const json = JSON.stringify(state);
-  lastSentJSON = json;
   try{
     flashSaved('بيتزامن…', true);
     const res = await fetch(DB_URL + '/state.json', {
       method: 'PUT',
       headers: {'Content-Type': 'application/json'},
-      body: json
+      body: JSON.stringify({_pw: myPassword, data: state})
     });
+    if(res.status === 401 || res.status === 403){
+      // stored password no longer valid — drop back to read-only
+      editMode = false;
+      myPassword = null;
+      try{ localStorage.removeItem(EDIT_KEY); }catch(e){}
+      updateLoginBtn();
+      render();
+      flashSaved('كلمة السر بقت غير صحيحة — سجّلي دخول تاني', false, true);
+      return;
+    }
     if(!res.ok) throw new Error('bad status');
+    lastSentJSON = json;
     flashSaved('اتزامن ✓');
   }catch(err){
     flashSaved('اتحفظ على الجهاز ده بس — هيتزامن لما النت يرجع', false, true);
@@ -661,8 +696,11 @@ async function initialLoad(){
   try{
     const res = await fetch(DB_URL + '/state.json');
     if(res.ok){
-      const data = await res.json();
-      if(data) state = data;
+      const payload = await res.json();
+      if(payload && payload.data){
+        state = payload.data;
+        lastSentJSON = JSON.stringify(state);
+      }
     }
   }catch(e){}
   render();
@@ -675,9 +713,12 @@ function connectStream(){
     es.addEventListener('put', e => {
       try{
         const msg = JSON.parse(e.data);
-        const json = JSON.stringify(msg.data || {});
-        if(msg.path === '/' && json !== lastSentJSON){
-          applyRemoteState(msg.data || {});
+        if(msg.path !== '/') return;
+        const newState = (msg.data && msg.data.data) || {};
+        const json = JSON.stringify(newState);
+        if(json !== lastSentJSON){
+          lastSentJSON = json;
+          applyRemoteState(newState);
         }
       }catch(err){}
     });
