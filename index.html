@@ -109,7 +109,7 @@
   /* ---------- Controls ---------- */
   .controls{
     position:sticky;top:0;z-index:5;
-    background:var(--bg);padding:10px 0 12px;margin-bottom:4px;
+    background:transparent;padding:10px 0 12px;margin-bottom:4px;
     display:flex;flex-direction:column;gap:8px;
   }
   .controls-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
@@ -122,7 +122,6 @@
   .chip:focus-visible{outline:2.5px solid var(--sky);outline-offset:2px}
   .chip[aria-pressed="true"]{background:var(--sky);color:#fff;border-color:var(--sky)}
   #onlyLeft[aria-pressed="true"]{background:var(--sun);border-color:var(--sun);color:#5A3D00}
-  .spacer{flex:1}
   .ghost{
     font-family:inherit;font-size:13px;background:none;border:none;
     color:var(--ink-soft);cursor:pointer;text-decoration:underline;padding:6px;
@@ -259,7 +258,6 @@
 
   @media (max-width:640px){
     .units{padding-inline-start:2px}
-    .spacer{display:none}
   }
   @media print{
     .controls,.ghost,footer{display:none}
@@ -300,7 +298,6 @@
       <button class="chip" id="onlyLeft" aria-pressed="false">اللي لسه</button>
       <button class="ghost" id="printBtn">طباعة</button>
       <button class="ghost" id="resetBtn">مسح الكل</button>
-      <span class="spacer"></span>
       <button class="chip" id="loginBtn" aria-pressed="false">دخول</button>
     </div>
   </div>
