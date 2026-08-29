@@ -18,6 +18,7 @@
     --mint:#2FB39A;
     --sun:#F5B335;
     --grape:#7A6FE0;
+    --rose:#DB5C8B;
     --warn-bg:#FFF6E5;
     --warn-line:#F5B335;
     --warn-ink:#8A5A00;
@@ -34,6 +35,7 @@
       --mint:#3FCBAE;
       --sun:#F2C463;
       --grape:#9C90F2;
+      --rose:#EC7FAA;
       --warn-bg:#2E2408;
       --warn-line:#8A6A1A;
       --warn-ink:#F2C463;
@@ -49,6 +51,7 @@
     --mint:#3FCBAE;
     --sun:#F2C463;
     --grape:#9C90F2;
+    --rose:#EC7FAA;
     --warn-bg:#2E2408;
     --warn-line:#8A6A1A;
     --warn-ink:#F2C463;
@@ -288,6 +291,7 @@
     <button class="chip" data-stage="s1" aria-pressed="false"><bdi dir="ltr">0-3</bdi></button>
     <button class="chip" data-stage="s2" aria-pressed="false"><bdi dir="ltr">3-6</bdi></button>
     <button class="chip" data-stage="s3" aria-pressed="false"><bdi dir="ltr">6-9</bdi></button>
+    <button class="chip" data-stage="gifts" aria-pressed="false">الهدايا</button>
     <span class="spacer"></span>
     <button class="chip" id="onlyLeft" aria-pressed="false">اللي لسه</button>
     <button class="ghost" id="printBtn">طباعة</button>
@@ -312,7 +316,8 @@ const STAGES = [
   {id:'always', label:'لكل الأعمار', title:'لكل الأعمار', note:'حاجات مالهاش مقاس، أو بتستخدم من أول يوم لحد ما تخلص.', color:'var(--grape)'},
   {id:'s1', label:'<bdi dir="ltr">0-3</bdi> شهور', title:'<bdi dir="ltr">0-3</bdi> شهور', note:'ديسمبر 2026 – فبراير 2027 · عزّ الشتا، فالتقيل والقطيفة هنا.', color:'var(--sky)'},
   {id:'s2', label:'<bdi dir="ltr">3-6</bdi> شهور', title:'<bdi dir="ltr">3-6</bdi> شهور', note:'مارس – مايو 2027 · ربيع ومناخ متقلب، طبقات خفيفة.', color:'var(--mint)'},
-  {id:'s3', label:'<bdi dir="ltr">6-9</bdi> شهور', title:'<bdi dir="ltr">6-9</bdi> شهور', note:'يونيو – أغسطس 2027 · صيف، كله نص كم وقطن خفيف.', color:'var(--sun)'}
+  {id:'s3', label:'<bdi dir="ltr">6-9</bdi> شهور', title:'<bdi dir="ltr">6-9</bdi> شهور', note:'يونيو – أغسطس 2027 · صيف، كله نص كم وقطن خفيف.', color:'var(--sun)'},
+  {id:'gifts', label:'الهدايا', title:'الهدايا', note:'قطع كبيرة، ممكن تتجمع كهدايا من العيلة بدل ما نشتريها.', color:'var(--rose)'}
 ];
 
 const ITEMS = [
@@ -320,7 +325,6 @@ const ITEMS = [
   {id:'a2', s:'always', c:'مفروشات ومناشف', q:5, n:'كفولات'},
   {id:'a3', s:'always', c:'مفروشات ومناشف', q:1, n:'طقم بشكير الحمام'},
   {id:'a4', s:'always', c:'المستشفى والخروج', q:1, n:'طقم المستشفى', d:'خريفي شتوي'},
-  {id:'a5', s:'always', c:'المستشفى والخروج', q:1, n:'شنطة بيبي'},
   {id:'a6', s:'always', c:'الرضاعة', q:1, n:'ببرونة'},
   {id:'a7', s:'always', c:'الرضاعة', q:2, n:'لهاية'},
   {id:'a8', s:'always', c:'الرضاعة', q:1, n:'مخدة رضاعة'},
@@ -342,7 +346,13 @@ const ITEMS = [
 
   {id:'d1', s:'s3', c:'أساسي يومي', q:8, n:'تبان نص كم'},
   {id:'d2', s:'s3', c:'نوم وبيت', q:8, n:'بجامات قطعتين', d:'صيفي نص كم'},
-  {id:'d3', s:'s3', c:'خروج', q:4, n:'سالوبيت ربيعي'}
+  {id:'d3', s:'s3', c:'خروج', q:4, n:'سالوبيت ربيعي'},
+
+  {id:'g1', s:'gifts', c:'أثاث', q:1, n:'سرير'},
+  {id:'g2', s:'gifts', c:'أثاث', q:1, n:'خزانة'},
+  {id:'g3', s:'gifts', c:'مستلزمات', q:1, n:'عرباية اطفال'},
+  {id:'g4', s:'gifts', c:'مستلزمات', q:1, n:'بانيو'},
+  {id:'a5', s:'gifts', c:'مستلزمات', q:1, n:'شنطة بيبي'}
 ];
 
 const EDIT_KEY = 'baby-checklist:pw';
