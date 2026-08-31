@@ -95,6 +95,7 @@
     padding:20px;margin:22px 0 20px;box-shadow:0 6px 20px rgba(63,139,216,.08);
   }
   .gauge-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .gauge-percent{font-family:"Baloo Bhaijaan 2",sans-serif;font-size:40px;font-weight:800;line-height:1.2;color:var(--rose);width:100%}
   .gauge-num{font-family:"Baloo Bhaijaan 2",sans-serif;font-size:32px;font-weight:800;line-height:1.2;font-variant-numeric:tabular-nums}
   .gauge-num small{font-size:15px;font-weight:500;color:var(--ink-soft)}
   .gauge-pct{font-family:"Baloo Bhaijaan 2",sans-serif;font-size:15px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
@@ -278,6 +279,7 @@
 
   <div class="gauge">
     <div class="gauge-top">
+      <div class="gauge-percent" id="gPercent">٠٪</div>
       <div class="gauge-num"><span id="gDone">0</span> <small>من <span id="gTotalPieces">0</span> قطعة</small></div>
       <div class="gauge-pct"><span id="gLines">0</span> صنف من <span id="gTotalLines">0</span> خلص</div>
     </div>
@@ -579,6 +581,8 @@ function updateGauge(){
   $('#gTotalPieces').textContent = totalPieces;
   $('#gLines').textContent = doneLines;
   $('#gTotalLines').textContent = totalLines;
+  const pct = totalPieces ? Math.round(donePieces / totalPieces * 100) : 0;
+  $('#gPercent').textContent = pct.toLocaleString('ar-EG') + '٪';
 }
 
 document.querySelectorAll('.chip[data-stage]').forEach(btn => {
